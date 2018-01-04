@@ -5,10 +5,6 @@ import android.content.Context;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-/**
- * 操作安装包中的“assets”目录下的文件
- *
- */
 public class AssetsUtils {
 
     /**

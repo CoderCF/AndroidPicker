@@ -2,10 +2,6 @@ package com.cf.androidpickerlibrary.wheelview;
 
 import java.util.TimerTask;
 
-/**
- * @TODO<平滑滚动的实现>
- * @author 小嵩
- */
 final class SmoothScrollTimerTask extends TimerTask {
 
     int realTotalOffset;

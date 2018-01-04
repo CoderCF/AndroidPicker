@@ -20,13 +20,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 描    述：
- * 创建日期：2017/7/20 14:26
- * 作    者：Chengfu
- * 邮    箱：
- * 备    注：
- */
 public class AddressPicker extends Dialog implements View.OnClickListener{
 
     /**
@@ -120,7 +113,11 @@ public class AddressPicker extends Dialog implements View.OnClickListener{
         mTvConfirm = (TextView) view.findViewById(R.id.tv_confirm);
         mTvCancel = (TextView)view. findViewById(R.id.tv_cancel);
 
-        // 设置可见条目数量
+        /**
+         * 设置可见条目数量
+         * 注：因为WheelView是圆形，最上面和最下面刚好在圆顶和圆底，
+         * 所以最上面和最下面两个看不到，因此可见数量要比设置的少2个
+         */
         mViewProvince.setVisibleItemCount(9);
         mViewCity.setVisibleItemCount(9);
         mViewDistrict.setVisibleItemCount(9 );
@@ -242,49 +239,6 @@ public class AddressPicker extends Dialog implements View.OnClickListener{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 获得当前区的索引
-     * @param district
-     */
-    private int getDistrictIndex(String district) {
-        String[] areas = mDistrictDatasMap.get("");
-        for (int k = 0; k < areas.length; k++) {
-            String area = areas[k];
-            if (area.contains(district)) {
-                return k;
-            }
-        }
-        return 0;
-    }
-    /**
-     * 获得当前市的索引
-     * @param city
-     */
-    private int getCityIndex(String city) {
-        String[] cities = mCitisDatasMap.get("");
-        for (int j = 0; j < cities.length; j++) {
-            String cit = cities[j];
-            if (cit.contains(city)) {
-                return j;
-            }
-        }
-        return 0;
-
-    }
-    /**
-     * 获得当前省的索引
-     * @param province
-     */
-    private int getProvinceIndex(String province) {
-        for (int i = 0; i < mProvinceDatas.length; i++) {
-            String pro = mProvinceDatas[i];
-            if (pro.contains(province)) {
-                return i;
-            }
-        }
-        return 0;
     }
 
 }

@@ -1,27 +1,107 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    compileSdkVersion 26
+
+    lintOptions {
+        abortOnError false
+    }
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        targetSdkVersion 26
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+}
+
+
+// 项目引用的版本号
+version="1.0.2"
+
+def siteUrl ='https://github.com/CoderCF/AndroidPicker'  // 项目的主页
+def gitUrl ='git@github.com:CoderCF/AndroidPicker.git'   // Git仓库的url
+
+group = "com.codercf" // Maven Group ID for the artifact，一般填你唯一的包名
+
+install {
+    repositories.mavenInstaller{
+        pom {
+            project{
+                packaging'aar'
+                name'AndroidPicker'// 可选，项目名称。
+                description'AndroidPicker for Android'// 可选，项目描述。
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer { //开发者基本信息
+                        id 'codercf'// 开发者的id。
+                        name 'codercf'// 开发者名字。
+                        email 'codercf116@sina.com'// 开发者邮箱。
+                    }
+                }
+                scm {
+                    connection gitUrl// Git仓库地址。
+                    developerConnection gitUrl// Git仓库地址。
+                    url siteUrl// 项目主页。
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier='sources'
+}
+
+task javadoc(type: Javadoc) {
+    options { //如果项目包含中文，最好配置上options,如果没有中文，options这一整项可不要
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
+    source= android.sourceSets.main.java.srcDirs
+    classpath+=project.files(android.getBootClasspath().join(File.pathSeparator))
+    failOnError false
+}
+
+task javadocJar(type: Jar,dependsOn: javadoc) {
+    classifier='javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo ="maven"// 上传到maven库。
+        name ="AndroidPicker"
+        userOrg ='codercf116' // Bintray的用户名。
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish =true
+    }
+
 }

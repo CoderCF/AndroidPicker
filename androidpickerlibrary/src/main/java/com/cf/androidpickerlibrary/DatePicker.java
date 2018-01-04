@@ -15,13 +15,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * 描    述：
- * 创建日期：2017/7/20 14:26
- * 作    者：Chengfu
- * 邮    箱：
- * 备    注：
- */
 public class DatePicker extends Dialog implements View.OnClickListener{
 
     private static final int MIN_YEAR = 1900;
@@ -45,7 +38,7 @@ public class DatePicker extends Dialog implements View.OnClickListener{
     public DatePicker(Context context) {
         super(context, R.style.transparentWindowStyle);
 
-        view = View.inflate(context,R.layout.layout_address_picker, null);
+        view = View.inflate(context,R.layout.layout_date_picker, null);
 
         initView();
         initData();
@@ -78,13 +71,17 @@ public class DatePicker extends Dialog implements View.OnClickListener{
     }
 
     private void initView() {
-        mYearWheelView = (WheelView) view.findViewById(R.id.wv_province);
-        mMonthWheelView = (WheelView) view.findViewById(R.id.wv_city);
-        mDayWheelView = (WheelView) view.findViewById(R.id.wv_district);
+        mYearWheelView = (WheelView) view.findViewById(R.id.wv_year);
+        mMonthWheelView = (WheelView) view.findViewById(R.id.wv_month);
+        mDayWheelView = (WheelView) view.findViewById(R.id.wv_day);
         mTvConfirm = (TextView) view.findViewById(R.id.tv_confirm);
         mTvCancel = (TextView)view. findViewById(R.id.tv_cancel);
 
-        // 设置可见条目数量
+        /**
+         * 设置可见条目数量
+         * 注：因为WheelView是圆形，最上面和最下面刚好在圆顶和圆底，
+         * 所以最上面和最下面两个看不到，因此可见数量要比设置的少2个
+         */
         mYearWheelView.setVisibleItemCount(9);
         mMonthWheelView.setVisibleItemCount(9);
         mDayWheelView.setVisibleItemCount(9);
@@ -99,7 +96,7 @@ public class DatePicker extends Dialog implements View.OnClickListener{
     }
 
     private void setListener() {
-        //年份*****************************
+        //年份*******************
         mYearWheelView.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(int index) {
@@ -108,7 +105,7 @@ public class DatePicker extends Dialog implements View.OnClickListener{
                 setDay();
             }
         });
-        //月份********************
+        //月份*******************
         mMonthWheelView.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(int index) {

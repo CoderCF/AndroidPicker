@@ -1,10 +1,7 @@
 package com.cf.androidpickerlibrary.wheelview;
 
 import java.util.TimerTask;
-/**
- * @TODO<滚动惯性的实现>
- * @author 小嵩
- */
+
 final class InertiaTimerTask extends TimerTask {
 
     float a;

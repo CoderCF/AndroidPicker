@@ -26,9 +26,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 
-/**
- * 3d滚轮控件
- */
 public class WheelView extends View {
 
     public enum ACTION { // 点击，滑翔(滑到尽头)，拖拽事件
@@ -54,6 +51,7 @@ public class WheelView extends View {
     int textColorOut;//未选项文字颜色
     int textColorCenter;//选中项文字颜色
     int dividerColor;//分割线颜色
+    int CenterBackground;//中间背景颜色
     int textSize;//选项的文字大小 单位为sp
     boolean isLoop;//循环滚动
     float lineSpacingMultiplier;// 条目间距倍数 可用来设置上下间距
@@ -64,6 +62,7 @@ public class WheelView extends View {
     Paint paintOuterText;//未选项画笔
     Paint paintCenterText;//选中项画笔
     Paint paintIndicator;//分割线画笔
+    Paint paintCenterBackground;//选中背景画笔
     private boolean isCenterLabel = true;//附加单位是否仅仅只显示在选中项后面
     private String label;//附加单位
     int maxTextWidth;//最大的文字宽
@@ -119,6 +118,7 @@ public class WheelView extends View {
             textColorOut = a.getColor(R.styleable.pickerview_pickerview_textColorOut, 0xFFa8a8a8);
             textColorCenter = a.getColor(R.styleable.pickerview_pickerview_textColorCenter, 0xFF2a2a2a);
             dividerColor = a.getColor(R.styleable.pickerview_pickerview_dividerColor, 0xFFd5d5d5);
+            CenterBackground = a.getColor(R.styleable.pickerview_pickerview_centerBackground, 0xFFa8a8a8);
             textSize = a.getDimensionPixelOffset(R.styleable.pickerview_pickerview_textSize, sp2px(context, 16));
             lineSpacingMultiplier = a.getFloat(R.styleable.pickerview_pickerview_lineSpacingMultiplier, 2.0F);
             isLoop = a.getBoolean(R.styleable.pickerview_pickerview_isLoop, false);
@@ -169,6 +169,10 @@ public class WheelView extends View {
         paintIndicator = new Paint();
         paintIndicator.setColor(dividerColor);
         paintIndicator.setAntiAlias(true);
+
+        paintCenterBackground = new Paint();
+        paintCenterBackground.setColor(CenterBackground);
+        paintCenterBackground.setAntiAlias(true);
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
             setLayerType(LAYER_TYPE_SOFTWARE, null);
@@ -400,6 +404,7 @@ public class WheelView extends View {
             canvas.drawLine(startX, firstLineY, endX, firstLineY, paintIndicator);
             canvas.drawLine(startX, secondLineY, endX, secondLineY, paintIndicator);
         }else {
+            canvas.drawRect(0.0F, firstLineY, measuredWidth, secondLineY, paintCenterBackground);
             canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, paintIndicator);
             canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, paintIndicator);
         }
