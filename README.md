@@ -12,7 +12,7 @@
 1.添加Gradle依赖
 
 ```
-compile 'com.codercf:androidpickerlibrary:1.0.1'
+compile 'com.codercf:androidpickerlibrary:1.0.2'
 ```
 
 2.选择器使用
